@@ -79,6 +79,7 @@ logging.getLogger("requests").setLevel(logging.WARNING)
 
 def usage():
     print('Usage: zap-full-scan.py -t <target> -l <login_url> -u <username> -p <password> -U <username_path> -P <password_path> [options]')
+    print('Required:')
     print('    -t target            target URL including the protocol, e.g. https://www.example.com')
     print('    -l login_url         login URL including the protocol, e.g. https://www.example.com')
     print('    -u username          login account username/email')
@@ -140,7 +141,7 @@ def main(argv):
     fail_inprog_count = 0
     exception_raised = False
 
-    ''' ====================== Website Login Information ====================== '''
+    ''' ====================== Website Login Information Variable ====================== '''
     login_url = ''
     username = ''
     password = ''
@@ -309,7 +310,7 @@ def main(argv):
             sys.exit(3)
 
     try:
-        ''' ====================== Configure Selenium to use ZAP Proxy ====================== '''
+        ''' ====================== SECTION 1: Login via Selenium ====================== '''
         chrome_options = Options()
         chrome_options.add_argument('--ignore-certificate-errors')
         chrome_options.add_argument('--allow-insecure-localhost')
@@ -331,7 +332,6 @@ def main(argv):
 
         driver = webdriver.Chrome(options=chrome_options)
 
-        ''' ====================== SECTION 1: Login via Selenium ====================== '''
         print('--- Account Login ---')
         print('Logging into the application...')
         driver.get(login_url)
@@ -345,7 +345,7 @@ def main(argv):
 
         print('Login completed!\n')
 
-        ''' ====================== SECTION 2: Configure ZAP & Replacer for Cookies ====================== '''
+        ''' ============ SECTION 2: Retrieve Cookies & Configure Replacer for Auth ============ '''
         # Retrieve and format cookies
         cookies = driver.get_cookies()
 
