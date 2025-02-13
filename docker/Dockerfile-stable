@@ -68,11 +68,18 @@ RUN pip3 install \
 	pip \
 	zaproxy \
 	pyyaml \
-	urllib3
+	urllib3 \
+    selenium
 
 RUN useradd -u 1000 -d /home/zap -m -s /bin/bash zap
 RUN echo zap:zap | chpasswd
 RUN mkdir /zap && chown zap:zap /zap
+
+# Install Chrome and ChromeDriver for Selenium
+RUN apt-get update && apt-get install -y \
+    chromium \
+    chromium-driver && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /zap
 
